@@ -1,0 +1,13 @@
+server:
+  port: 8761
+  
+spring:  
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false    
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false

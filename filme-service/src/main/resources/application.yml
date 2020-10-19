@@ -1,0 +1,19 @@
+server:
+  port: 8083
+  servlet: 
+    context-path: /filme-service
+
+spring:
+  application:
+    name: filme-service
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false  
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    preferIpAddress: true

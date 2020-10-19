@@ -1,0 +1,19 @@
+server:
+  port: 8084
+  servlet: 
+    context-path: /chamado-service
+
+spring:
+  application:
+    name: chamado-service
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false  
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    preferIpAddress: true
