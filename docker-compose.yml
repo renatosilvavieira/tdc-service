@@ -2,21 +2,25 @@ version: '3'
 
 services:
   postgres-compose:
-    image: postgres
+    image: postgres:13 
+    restart: always    
     environment:
-      POSTGRES_PASSWORD: "Postgres2019!"
+      POSTGRES_DB: tdc_db
+      POSTGRES_PASSWORD: "postgres" 
+      PGDATA:/var/lib/postgresql/data/pgdata
     ports:
-      - "15432:5432"
+      - "5432:5432"
     volumes:
-      - D:\docker-compose\PostgreSQL:/var/lib/postgresql/data 
+      - postgresql-volume:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql      
     networks:
       - postgres-compose-network
       
   pgadmin-compose:
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: "renatosilvavieira@gmal.com"
-      PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020!"
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin123"
     ports:
       - "16543:80"
     depends_on:
@@ -59,10 +63,13 @@ services:
     environment:
       KAFKA_BROKERCONNECT: kafka:29092
 
-
 networks: 
-  postgres-compose-network:
-    driver: bridge 
+    postgres-compose-network:
+        driver: bridge 
     
-  broker-kafka:
-    driver: bridge
+    broker-kafka:
+        driver: bridge
+        
+volumes:
+    postgresql-volume:
+      external: true        
