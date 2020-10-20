@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+  postgres-compose:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "Postgres2019!"
+    ports:
+      - "15432:5432"
+    volumes:
+      - D:\docker-compose\PostgreSQL:/var/lib/postgresql/data 
+    networks:
+      - postgres-compose-network
+      
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "renatosilvavieira@gmal.com"
+      PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020!"
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres-compose
+    networks:
+      - postgres-compose-network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    networks: 
+      - broker-kafka
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    networks: 
+      - broker-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:latest
+    networks: 
+      - broker-kafka
+    depends_on:
+      - kafka
+    ports:
+      - 19000:9000
+    environment:
+      KAFKA_BROKERCONNECT: kafka:29092
+
+
+networks: 
+  postgres-compose-network:
+    driver: bridge 
+    
+  broker-kafka:
+    driver: bridge
