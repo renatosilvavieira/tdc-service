@@ -1,0 +1,19 @@
+server:
+  port: 8085
+  servlet: 
+    context-path: /usuario-service
+
+spring:
+  application:
+    name: usuario-service
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false  
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    preferIpAddress: true

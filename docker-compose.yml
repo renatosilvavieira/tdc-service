@@ -6,12 +6,10 @@ services:
     restart: always    
     environment:
       POSTGRES_DB: tdc_db
-      POSTGRES_PASSWORD: "postgres" 
-      PGDATA:/var/lib/postgresql/data/pgdata
+      POSTGRES_PASSWORD: "postgres"      
     ports:
       - "5432:5432"
-    volumes:
-      - postgresql-volume:/var/lib/postgresql/data
+    volumes:     
       - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql      
     networks:
       - postgres-compose-network
@@ -69,7 +67,3 @@ networks:
     
     broker-kafka:
         driver: bridge
-        
-volumes:
-    postgresql-volume:
-      external: true        
