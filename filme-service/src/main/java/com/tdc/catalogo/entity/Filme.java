@@ -45,5 +45,13 @@ public class Filme extends Catalogo {
 	@Column(name = "duracao")
 	private String duracao;
 
+	@Column(name = "nome")
+	protected String nome;
+	
+	@Column(name = "capitulo")
+	private Integer capitulo;
+	
+	@Column(name = "temporada")
+	private Integer temporada;
 	
 }

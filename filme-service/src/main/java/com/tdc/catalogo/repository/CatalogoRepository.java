@@ -17,5 +17,8 @@ public interface CatalogoRepository extends JpaRepository<Catalogo, Integer> {
 	
 	@Query(value = "select f from Catalogo f where f.idCatalogo = :idCatalogo or f.nome like :nome ")
 	Optional<List<Catalogo>> consultaDetalhesCatalogo(Integer idCatalogo, String nome);
+	
+	@Query(value = "select f from Catalogo f Join fetch f.generos gf where gf.idGenero = :idGenero and f.qtdeVisualizacao is not null order by f.qtdeVisualizacao desc ")
+	Optional<List<Catalogo>> consultaVisualizadosPorGenero(Integer idGenero);
 
 }

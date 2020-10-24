@@ -1,4 +1,4 @@
-package com.tdc.catalogo.vo;
+package com.tdc.usuario.vo;
 
 import java.io.Serializable;
 import java.util.List;

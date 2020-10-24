@@ -85,6 +85,21 @@ public class CatalogoController {
 		
 		return new ResponseEntity<>("Assistindo Filme", HttpStatus.OK);		
 	}
+	
+	@PostMapping("/assistirNoFuturo")
+	public ResponseEntity<?> assistirNoFuturo(Integer idCatalogo, Integer idUsuario) {
+		
+		catalogoService.assistirNoFuturo(idCatalogo, idUsuario);
+		
+		return new ResponseEntity<>("Marcado para Assistir no futuro", HttpStatus.OK);		
+	}
+	
+	@GetMapping("/consultaMaisAssistido")
+	public ResponseEntity<?> consultaMaisAssistido(Integer idGenero) {
+		
+		return catalogoService.consultaMaisAssistido(idGenero);
+	}
+	
 
 }	
 		

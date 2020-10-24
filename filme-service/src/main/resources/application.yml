@@ -10,9 +10,9 @@ spring:
     loadbalancer:
       ribbon:
         enabled: false            stream:
-      default-binder: kafka
-                  bindings:        output:          
-          destination: orgChangeTopic
+      default-binder: kafka                  bindings:        output:          
+          destination: topico.usuario
+          group: output-group-1
           content-type: application/json
         Kafka:
           binder:

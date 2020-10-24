@@ -88,11 +88,25 @@ public class CatalogoService {
 			
 			catalogoVO = transformCatalogoTOVO(optionalCatalogo.get());
 			catalogoVO.setIdUsuario(idUsuario);
-			
+			catalogoVO.setAssistido(Boolean.TRUE);
 			enviaMensagemFilmeAssistido(catalogoVO);
-		}		
-		
+		}
 	}
+	
+	public void assistirNoFuturo(Integer idCatalogo, Integer idUsuario) {
+		
+		Optional<Catalogo> optionalCatalogo = catalogoRepository.findById(idCatalogo);
+		
+		CatalogoVO catalogoVO = null;
+		if (optionalCatalogo.isPresent()) {
+			
+			catalogoVO = transformCatalogoTOVO(optionalCatalogo.get());
+			catalogoVO.setIdUsuario(idUsuario);
+			catalogoVO.setAssistido(Boolean.FALSE);
+			enviaMensagemFilmeAssistido(catalogoVO);
+		}
+	}
+	
 	
 	private CatalogoVO transformCatalogoTOVO(Catalogo catalogo) {
 		
@@ -121,6 +135,20 @@ public class CatalogoService {
 		optionalCatalogo.get().setQtdeVisualizacao(optionalCatalogo.get().getQtdeVisualizacao() == null ? 1
 				: optionalCatalogo.get().getQtdeVisualizacao() + 1);
 		catalogoRepository.save(optionalCatalogo.get());		
+	}
+
+	public ResponseEntity<?> consultaMaisAssistido(Integer idGenero) {
+		
+		Optional<List<Catalogo>> optionalCatalogo = catalogoRepository.consultaVisualizadosPorGenero(idGenero);
+		
+		List<CatalogoVO> catalogoList = new ArrayList<>();
+		if (optionalCatalogo.isPresent()) {
+			for (Catalogo catalogo : optionalCatalogo.get()) {
+				catalogoList.add(transformCatalogoTOVO(catalogo));				
+			}
+		}
+		
+		return new ResponseEntity<>(catalogoList, HttpStatus.OK);
 	}
 
 }

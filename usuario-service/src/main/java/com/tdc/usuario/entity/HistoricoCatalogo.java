@@ -21,7 +21,17 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tbl_historico_catalogo", catalog = "usuario_db")
 public class HistoricoCatalogo implements Serializable {
-	
+			
+	public HistoricoCatalogo(Usuario usuario, Integer idCatalogo, boolean assistido, String descricao,
+			String tipoCatalogo) {
+		super();
+		this.usuario = usuario;
+		this.idCatalogo = idCatalogo;
+		this.assistido = assistido;
+		this.descricao = descricao;
+		this.tipoCatalogo = tipoCatalogo;
+	}
+
 	private static final long serialVersionUID = -6919794400361859011L;
 
 	@Id
@@ -37,6 +47,15 @@ public class HistoricoCatalogo implements Serializable {
 	private Integer idCatalogo;	
 	
 	@Column(name = "assistido", columnDefinition = "boolean default false")
-	private boolean assistido;
+	private Boolean assistido;
+	
+	@Column(name = "descricao")
+	private String descricao;
+	
+	@Column(name = "tipoCatalogo")
+	private String tipoCatalogo;
+	
+	@Column(name = "estrela")
+	private Integer estrela;
 
 }
