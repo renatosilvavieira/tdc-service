@@ -12,7 +12,7 @@ spring:
         enabled: false  
   datasource:
     name: usuariodb    
-    url: jdbc:postgresql://localhost:5432/usuario_db
+    url: jdbc:postgresql://postgres-usuario-service/usuario_db
     username: postgres
     password: postgres
     hikari:
@@ -32,6 +32,6 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+      defaultZone: ${EUREKA_URI:eureka/eureka}
   instance:
     preferIpAddress: true

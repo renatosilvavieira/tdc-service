@@ -9,8 +9,19 @@ spring:
   cloud:
     loadbalancer:
       ribbon:
-        enabled: false
-           
+        enabled: false        
+    stream:
+      default-binder: kafka
+            
+      bindings:
+        output:          
+          destination: orgChangeTopic
+          content-type: application/json
+        Kafka:
+          binder:
+            zkNodes:localhost:9092
+            brokers:localhost:29092
+      
   datasource:
     name: catalogodb    
     url: jdbc:postgresql://postgres-filme-service/catalogo_db
@@ -33,7 +44,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:eureka-server/eureka}
+      defaultZone: ${EUREKA_URI:http://eureka_server/eureka}
   instance:
     preferIpAddress: true
     

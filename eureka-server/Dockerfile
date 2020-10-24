@@ -11,5 +11,4 @@ RUN mvn -f /home/app/pom.xml clean package
 #
 FROM openjdk:8-jre-slim
 COPY --from=build /home/app/target/eureka-server-0.0.1-SNAPSHOT.jar /usr/local/lib/eureka-server-0.0.1-SNAPSHOT.jar
-EXPOSE 8761
 ENTRYPOINT ["java","-jar","/usr/local/lib/eureka-server-0.0.1-SNAPSHOT.jar"]

@@ -12,7 +12,7 @@ spring:
         enabled: false  
   datasource:
     name: manutencaodb    
-    url: jdbc:postgresql://localhost:5432/manutencao_db?createDatabaseIfNotExist=true&useSSL=false
+    url: jdbc:postgresql://postgres-chamado-service/manutencao_db?createDatabaseIfNotExist=true&useSSL=false
     username: postgres
     password: postgres
     hikari:
@@ -32,6 +32,6 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+      defaultZone: ${EUREKA_URI:eureka-server/eureka}
   instance:
     preferIpAddress: true

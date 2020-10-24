@@ -1,1 +1,1 @@
-CREATE DATABASE IF NOT EXISTS catalogo_db;
+CREATE DATABASE catalogo_db;

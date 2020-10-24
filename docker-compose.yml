@@ -1,18 +1,35 @@
 version: "3"
 
 services:
-  postgres-compose:
-    image: postgres:13
+  postgres-filme-service:
+    build:
+      context: filme-service
+      dockerfile: Dockerfile-postgresql
     restart: always
-    environment:
-      POSTGRES_PASSWORD: "postgres"
-    ports:
-      - "5432:5432"
     volumes:
-      - postgresql-volume:/var/lib/postgresql/data
-      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - postgresql-filme-service-volume:/var/lib/postgresql/data
     networks:
-      - postgres-compose-network
+      - postgresql-filme-service-network
+
+  postgres-usuario-service:
+    build:
+      context: usuario-service
+      dockerfile: Dockerfile-postgresql
+    restart: always
+    volumes:
+      - postgresql-usuario-service-volume:/var/lib/postgresql/data
+    networks:
+      - postgresql-usuario-service-network
+
+  postgres-chamado-service:
+    build:
+      context: chamado-service
+      dockerfile: Dockerfile-postgresql
+    restart: always
+    volumes:
+      - postgresql-chamado-service-volume:/var/lib/postgresql/data
+    networks:
+      - postgresql-chamado-service-network
 
   pgadmin-compose:
     image: dpage/pgadmin4
@@ -22,11 +39,15 @@ services:
     ports:
       - "16543:80"
     depends_on:
-      - postgres-compose
+      - postgres-filme-service
+      - postgres-chamado-service
+      - postgres-usuario-service
     volumes:
       - pgadmin-volume:/var/lib/pgadmin
     networks:
-      - postgres-compose-network
+      - postgresql-filme-service-network
+      - postgresql-usuario-service-network
+      - postgresql-chamado-service-network
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -75,8 +96,54 @@ services:
     networks:
       - app-network
 
+  filme-service:
+    build:
+      context: filme-service
+      dockerfile: Dockerfile
+    container_name: filme-service
+    ports:
+      - 8083:8083
+    depends_on:
+      - eureka-server
+      - postgres-filme-service
+    networks:
+      - app-network
+      - postgresql-filme-service-network
+
+  chamado-service:
+    build:
+      context: chamado-service
+      dockerfile: Dockerfile
+    container_name: chamado-service
+    ports:
+      - 8084:8084
+    depends_on:
+      - eureka-server
+      - postgres-chamado-service
+    networks:
+      - app-network
+      - postgresql-chamado-service-network
+
+  usuario-service:
+    build:
+      context: usuario-service
+      dockerfile: Dockerfile
+    container_name: usuario-service
+    ports:
+      - 8085:8085
+    depends_on:
+      - eureka-server
+      - postgres-usuario-service
+    networks:
+      - app-network
+      - postgresql-usuario-service-network
+
 networks:
-  postgres-compose-network:
+  postgresql-filme-service-network:
+    driver: bridge
+  postgresql-chamado-service-network:
+    driver: bridge
+  postgresql-usuario-service-network:
     driver: bridge
   broker-kafka:
     driver: bridge
@@ -84,6 +151,8 @@ networks:
     driver: bridge
 
 volumes:
-  postgresql-volume:
+  postgresql-filme-service-volume:
+  postgresql-usuario-service-volume:
+  postgresql-chamado-service-volume:
   pgadmin-volume:
   kafka-volume:
