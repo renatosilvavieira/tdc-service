@@ -1,4 +1,4 @@
-package com.tdc.netflix.chamado;
+package com.tdc.chamado;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

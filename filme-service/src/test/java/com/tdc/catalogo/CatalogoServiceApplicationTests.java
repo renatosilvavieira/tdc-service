@@ -1,9 +1,9 @@
-package com.tdc.netflix.filme;
+package com.tdc.catalogo;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class FilmeServiceApplicationTests {
+class CatalogoServiceApplicationTests {
 	
 
 }

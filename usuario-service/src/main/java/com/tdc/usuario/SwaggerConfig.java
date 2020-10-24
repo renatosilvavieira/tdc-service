@@ -1,4 +1,4 @@
-package com.tdc.catalogo;
+package com.tdc.usuario;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
