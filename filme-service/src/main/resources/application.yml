@@ -13,7 +13,7 @@ spring:
            
   datasource:
     name: catalogodb    
-    url: jdbc:postgresql://localhost:5432/catalogo_db
+    url: jdbc:postgresql://postgres-filme-service/catalogo_db
     username: postgres
     password: postgres
     hikari:
@@ -33,7 +33,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+      defaultZone: ${EUREKA_URI:eureka-server/eureka}
   instance:
     preferIpAddress: true
     
