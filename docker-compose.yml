@@ -1,19 +1,19 @@
-version: '3'
+version: "3"
 
 services:
   postgres-compose:
-    image: postgres:13 
-    restart: always    
+    image: postgres:13
+    restart: always
     environment:
       POSTGRES_DB: tdc_db
-      POSTGRES_PASSWORD: "postgres"      
+      POSTGRES_PASSWORD: "postgres"
     ports:
       - "5432:5432"
-    volumes:     
-      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql      
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
     networks:
       - postgres-compose-network
-      
+
   pgadmin-compose:
     image: dpage/pgadmin4
     environment:
@@ -28,7 +28,7 @@ services:
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
-    networks: 
+    networks:
       - broker-kafka
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
@@ -36,7 +36,7 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:latest
-    networks: 
+    networks:
       - broker-kafka
     depends_on:
       - zookeeper
@@ -52,7 +52,7 @@ services:
 
   kafdrop:
     image: obsidiandynamics/kafdrop:latest
-    networks: 
+    networks:
       - broker-kafka
     depends_on:
       - kafka
@@ -61,9 +61,22 @@ services:
     environment:
       KAFKA_BROKERCONNECT: kafka:29092
 
-networks: 
-    postgres-compose-network:
-        driver: bridge 
-    
-    broker-kafka:
-        driver: bridge
+  eureka-server:
+    build:
+      context: eureka-server
+      dockerfile: Dockerfile
+    container_name: eureka-server
+    ports:
+      - 8761:8761
+    networks:
+      - app-network
+
+networks:
+  postgres-compose-network:
+    driver: bridge
+
+  broker-kafka:
+    driver: bridge
+
+  app-network:
+    driver: bridge
