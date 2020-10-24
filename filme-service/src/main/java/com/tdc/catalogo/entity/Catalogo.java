@@ -41,6 +41,9 @@ public abstract class Catalogo implements Serializable {
 	@Column(name = "nome")
 	protected String nome;
 	
+	@Column(name = "qtde_visualizacao")
+	private Integer qtdeVisualizacao;
+	
 	@ManyToMany
 	@JoinTable(name = "genero_catalog", joinColumns = @JoinColumn(name = "catalog_id"), inverseJoinColumns = @JoinColumn(name = "genero_id"))
 	protected Set<Genero> generos;

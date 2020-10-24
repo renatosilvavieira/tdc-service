@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface CatalogProcessor {
 	
-	@Output("topicoUsuario")
+	@Output("topico.usuario")
 	MessageChannel output();
 
 }
