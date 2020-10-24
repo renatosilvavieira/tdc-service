@@ -36,4 +36,6 @@ public class FilmeVO implements Serializable {
 	
 	private Integer idCatalogo;
 	
+	private Integer idUsuario;
+	
 }

@@ -76,7 +76,7 @@ public class CatalogoController {
 	@PostMapping("/assistirFilme")
 	public ResponseEntity<?> assistirFilme(Integer idCatalogo, Integer idUsuario) {
 		
-		
+		catalogoService.assistirFilme(idCatalogo, idUsuario);
 		
 		return new ResponseEntity<>("Assistindo Filme", HttpStatus.OK);		
 	}
