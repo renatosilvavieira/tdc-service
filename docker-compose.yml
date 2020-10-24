@@ -5,11 +5,11 @@ services:
     image: postgres:13
     restart: always
     environment:
-      POSTGRES_DB: tdc_db
       POSTGRES_PASSWORD: "postgres"
     ports:
       - "5432:5432"
     volumes:
+      - postgresql-volume:/var/lib/postgresql/data
       - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
     networks:
       - postgres-compose-network
@@ -23,6 +23,8 @@ services:
       - "16543:80"
     depends_on:
       - postgres-compose
+    volumes:
+      - pgadmin-volume:/var/lib/pgadmin
     networks:
       - postgres-compose-network
 
@@ -49,6 +51,8 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka-volume:/var/run/docker.sock
 
   kafdrop:
     image: obsidiandynamics/kafdrop:latest
@@ -74,9 +78,12 @@ services:
 networks:
   postgres-compose-network:
     driver: bridge
-
   broker-kafka:
     driver: bridge
-
   app-network:
     driver: bridge
+
+volumes:
+  postgresql-volume:
+  pgadmin-volume:
+  kafka-volume:

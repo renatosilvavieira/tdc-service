@@ -10,6 +10,24 @@ spring:
     loadbalancer:
       ribbon:
         enabled: false  
+  datasource:
+    name: manutencaodb    
+    url: jdbc:postgresql://localhost:5432/manutencao_db?createDatabaseIfNotExist=true&useSSL=false
+    username: postgres
+    password: postgres
+    hikari:
+      idle-timeout: 10000
+      maximum-pool-size: 60
+      minimum-idle: 20
+      pool-name: manutencaodb
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServerDialect
+    show-sql: false
+    properties:
+      hibernate: 
+        format_sql: true
+        ddl-auto: update
+
 
 eureka:
   client:

@@ -10,6 +10,24 @@ spring:
     loadbalancer:
       ribbon:
         enabled: false  
+  datasource:
+    name: usuariodb    
+    url: jdbc:postgresql://localhost:5432/usuario_db
+    username: postgres
+    password: postgres
+    hikari:
+      idle-timeout: 10000
+      maximum-pool-size: 60
+      minimum-idle: 20
+      pool-name: usuariodb
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    show-sql: true
+    generate-ddl: true
+    properties:
+      hibernate: 
+        format_sql: true
+        ddl-auto: update
 
 eureka:
   client:
