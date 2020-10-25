@@ -9,15 +9,16 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.netflix.discovery.EurekaClient;
-import com.tdc.usuario.entity.HistoricoCatalogo;
 import com.tdc.usuario.entity.Usuario;
 import com.tdc.usuario.service.HistoricoCatalogoService;
 import com.tdc.usuario.service.UsuarioService;
+import com.tdc.usuario.vo.HistoricoCatalogoVO;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -58,10 +59,10 @@ public class UsuarioController {
 	@GetMapping("/retornaFilmesAssistidos")
 	public ResponseEntity<?> getListaFimeSerieAssistido(Integer idUsuario) {
 		
-		Optional<List<HistoricoCatalogo>> histOptional = historicoCatalogoService.getListaFimeSerieAssistido(idUsuario);
+		Optional<List<HistoricoCatalogoVO>> histOptional = historicoCatalogoService.getListaFimeSerieAssistido(idUsuario);
 		
 		if (!histOptional.isPresent()) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>("Não encontrado",HttpStatus.NO_CONTENT);
 		}
 				
 		return new ResponseEntity<>(histOptional.get(),HttpStatus.OK);
@@ -70,13 +71,17 @@ public class UsuarioController {
 	@GetMapping("/retornaFimeSerieAssistirFuturo")
 	public ResponseEntity<?> getListaFimeSerieAssistirFuturo(Integer idUsuario) {
 		
-		Optional<List<HistoricoCatalogo>> histOptional = historicoCatalogoService.getListaFimeSerieAssistirFuturo(idUsuario);
+		Optional<List<HistoricoCatalogoVO>> histOptional = historicoCatalogoService.getListaFimeSerieAssistirFuturo(idUsuario);
 		
 		if (!histOptional.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-				
+						
 		return new ResponseEntity<>(histOptional.get(),HttpStatus.OK);
-	}	
-
+	}
+	
+	@PostMapping("/votar")
+	public ResponseEntity<?> votar(Integer idUsuario, Integer idCatalogo, Integer estrela) {		
+		return historicoCatalogoService.votar(idUsuario, idCatalogo, estrela);
+	}
 }

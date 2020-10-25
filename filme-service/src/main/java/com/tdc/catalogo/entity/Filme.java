@@ -8,7 +8,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.tdc.catalogo.vo.FilmeVO;
+import com.tdc.catalogo.vo.CatalogoVO;
 import com.tdc.catalogo.vo.GeneroVO;
 
 import lombok.Data;
@@ -25,7 +25,7 @@ public class Filme extends Catalogo {
 
 	private static final long serialVersionUID = -3373625482024989935L;
 
-	public Filme(FilmeVO filmeVO) {
+	public Filme(CatalogoVO filmeVO) {
 		super();
 		this.descricao = filmeVO.getDescricao();
 		this.duracao = filmeVO.getDuracao();
@@ -38,15 +38,20 @@ public class Filme extends Catalogo {
 		this.setGeneros(generos);
 		this.setNome(filmeVO.getNome());
 	}
-
 	
 	@Column(name = "descricao")
 	private String descricao;
 	
 	@Column(name = "duracao")
 	private String duracao;
+
+	@Column(name = "nome")
+	protected String nome;
 	
-	@Column(name = "qtde_visualizacao")
-	private Integer qtdeVisualizacao;
+	@Column(name = "capitulo")
+	private Integer capitulo;
+	
+	@Column(name = "temporada")
+	private Integer temporada;
 	
 }

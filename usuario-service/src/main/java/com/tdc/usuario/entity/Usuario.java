@@ -24,6 +24,11 @@ public class Usuario implements Serializable {
 	
 	private static final long serialVersionUID = 435882822658180531L;
 	
+	public Usuario(Integer idUsuario) {
+		super();
+		this.idUsuario = idUsuario;		
+	}
+	
 	public Usuario(String login, String nome) {
 		super();
 		this.login = login;

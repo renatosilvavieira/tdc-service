@@ -11,12 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
-import com.netflix.servo.publish.FileMetricObserver;
+import com.tdc.catalogo.entity.Catalogo;
 import com.tdc.catalogo.entity.Filme;
 import com.tdc.catalogo.entity.Genero;
+import com.tdc.catalogo.entity.Serie;
 import com.tdc.catalogo.processor.CatalogProcessor;
-import com.tdc.catalogo.repository.FilmeRepository;
-import com.tdc.catalogo.vo.FilmeVO;
+import com.tdc.catalogo.repository.CatalogoRepository;
+import com.tdc.catalogo.vo.CatalogoVO;
 import com.tdc.catalogo.vo.GeneroVO;
 
 @Service
@@ -24,80 +25,130 @@ import com.tdc.catalogo.vo.GeneroVO;
 public class CatalogoService {
 	
 	@Autowired
-	private FilmeRepository filmeRepository;
+	private CatalogoRepository catalogoRepository;
 	
 	@Autowired
 	private CatalogProcessor catalogProcessor;
 	
-	public List<FilmeVO> pesquisaFilmePorGenero(Integer idGenero) {
+	public List<CatalogoVO> pesquisaCatalogoPorGenero(Integer idGenero) {
 		
-		Optional<List<Filme>> optionalList = filmeRepository.findByIdGenero(idGenero);
+		Optional<List<Catalogo>> optionalList = catalogoRepository.findByIdGenero(idGenero);
 				
-		List<FilmeVO> filmeList = new ArrayList<>();		
+		List<CatalogoVO> catalogoList = new ArrayList<>();		
 		if (optionalList.isPresent()) {
-			for (Filme filme : optionalList.get()) {				
-				filmeList.add(transformFilmeTOVO(filme));
+			for (Catalogo catalogo : optionalList.get()) {				
+				catalogoList.add(transformCatalogoTOVO(catalogo));
 			}
 		}
 		
-		return filmeList;
+		return catalogoList;
 	}
 
-	public ResponseEntity<Filme> cadastraFilme(FilmeVO filmeVO) {
+	public ResponseEntity<Catalogo> cadastraFilme(CatalogoVO catalogoVO) {
 		
-		Filme filme = new Filme(filmeVO);
+		Filme filme = new Filme(catalogoVO);
 		
-		filmeRepository.save(filme);
+		catalogoRepository.save(filme);
 		
-		return new ResponseEntity<Filme>(filme, HttpStatus.OK);
+		return new ResponseEntity<Catalogo>(filme, HttpStatus.OK);
 	}
 	
-	public List<FilmeVO> consultaDetalhes(Integer idCatalogo, String nome) {
+	public ResponseEntity<Catalogo> cadastraSerie(CatalogoVO catalogoVO) {
 		
-		Optional<List<Filme>> optionalFilme = filmeRepository.findByidCatalogoOrNomeLike(idCatalogo, nome);
+		Serie serie = new Serie(catalogoVO);
 		
-		List<FilmeVO> filmeList = new ArrayList<>();	
+		catalogoRepository.save(serie);
+		
+		return new ResponseEntity<Catalogo>(serie, HttpStatus.OK);
+	}
+	
+	public List<CatalogoVO> consultaDetalhes(Integer idCatalogo, String nome) {
+		
+		Optional<List<Catalogo>> optionalFilme = catalogoRepository.consultaDetalhesCatalogo(idCatalogo, "%"+nome+"%");
+				
+		List<CatalogoVO> catalogoList = new ArrayList<>();	
 		if (optionalFilme.isPresent()) {
-			for (Filme filme : optionalFilme.get()) {				
-				filmeList.add(transformFilmeTOVO(filme));
+			for (Catalogo catalogo : optionalFilme.get()) {				
+				catalogoList.add(transformCatalogoTOVO(catalogo));
 			}
-			return filmeList;
+			return catalogoList;
 		}
 		
 		return null;		
 	}
 	
-	private FilmeVO transformFilmeTOVO(Filme filme) {
-
-		List<GeneroVO> generoList = new ArrayList<>();
-		for (Genero genero : filme.getGeneros()) {
-			generoList.add(new GeneroVO(genero.getIdGenero(), genero.getDescricao()));
-		}
-
-		return new FilmeVO(filme.getNome(), filme.getDescricao(), filme.getDuracao(), generoList,
-				filme.getQtdeVisualizacao(), filme.getIdCatalogo());
-
-	}
-
 	public void assistirFilme(Integer idCatalogo, Integer idUsuario) {
 		
-		Optional<Filme> optionalFilme = filmeRepository.findById(idCatalogo);
+		Optional<Catalogo> optionalCatalogo = catalogoRepository.findById(idCatalogo);
 		
-		FilmeVO filmeVO = null;
-		if (optionalFilme.isPresent()) {
+		CatalogoVO catalogoVO = null;
+		if (optionalCatalogo.isPresent()) {
 			
-			optionalFilme.get().setQtdeVisualizacao(optionalFilme.get().getQtdeVisualizacao() == null ? 1
-					: optionalFilme.get().getQtdeVisualizacao() + 1);
-			filmeRepository.save(optionalFilme.get());
+			acrescentaVisualizacao(optionalCatalogo);
 			
-			filmeVO = transformFilmeTOVO(optionalFilme.get());
-			filmeVO.setIdUsuario(idUsuario);
-			catalogProcessor.output().send(MessageBuilder.withPayload(filmeVO)
-		            .build());
-		}		
+			catalogoVO = transformCatalogoTOVO(optionalCatalogo.get());
+			catalogoVO.setIdUsuario(idUsuario);
+			catalogoVO.setAssistido(Boolean.TRUE);
+			enviaMensagemFilmeAssistido(catalogoVO);
+		}
+	}
+	
+	public void assistirNoFuturo(Integer idCatalogo, Integer idUsuario) {
 		
+		Optional<Catalogo> optionalCatalogo = catalogoRepository.findById(idCatalogo);
+		
+		CatalogoVO catalogoVO = null;
+		if (optionalCatalogo.isPresent()) {
+			
+			catalogoVO = transformCatalogoTOVO(optionalCatalogo.get());
+			catalogoVO.setIdUsuario(idUsuario);
+			catalogoVO.setAssistido(Boolean.FALSE);
+			enviaMensagemFilmeAssistido(catalogoVO);
+		}
 	}
 	
 	
+	private CatalogoVO transformCatalogoTOVO(Catalogo catalogo) {
+		
+		List<GeneroVO> generoList = new ArrayList<>();
+		for (Genero genero : catalogo.getGeneros()) {
+			generoList.add(new GeneroVO(genero.getIdGenero(), genero.getDescricao()));
+		}
+		
+		if (catalogo instanceof Filme) {
+			Filme filme = (Filme) catalogo;
+			return new CatalogoVO(filme.getNome(), filme.getDescricao(), filme.getDuracao(), generoList,
+					filme.getQtdeVisualizacao(), filme.getIdCatalogo(), "filme");
+		} else {
+			Serie serie = (Serie) catalogo;
+			return new CatalogoVO(serie.getNome(), serie.getDescricao(), serie.getDuracao(), generoList,
+					serie.getQtdeVisualizacao(), serie.getIdCatalogo(), "serie", serie.getCapitulo(), serie.getTemporada());
+		}
+	}
+	
+	private void enviaMensagemFilmeAssistido(CatalogoVO catalogoVO) {
+		catalogProcessor.output().send(MessageBuilder.withPayload(catalogoVO)
+	            .build());		
+	}
+	
+	private void acrescentaVisualizacao(Optional<Catalogo> optionalCatalogo) {
+		optionalCatalogo.get().setQtdeVisualizacao(optionalCatalogo.get().getQtdeVisualizacao() == null ? 1
+				: optionalCatalogo.get().getQtdeVisualizacao() + 1);
+		catalogoRepository.save(optionalCatalogo.get());		
+	}
+
+	public ResponseEntity<?> consultaMaisAssistido(Integer idGenero) {
+		
+		Optional<List<Catalogo>> optionalCatalogo = catalogoRepository.consultaVisualizadosPorGenero(idGenero);
+		
+		List<CatalogoVO> catalogoList = new ArrayList<>();
+		if (optionalCatalogo.isPresent()) {
+			for (Catalogo catalogo : optionalCatalogo.get()) {
+				catalogoList.add(transformCatalogoTOVO(catalogo));				
+			}
+		}
+		
+		return new ResponseEntity<>(catalogoList, HttpStatus.OK);
+	}
 
 }

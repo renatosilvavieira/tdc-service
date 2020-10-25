@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.netflix.discovery.EurekaClient;
 import com.tdc.catalogo.service.CatalogoService;
-import com.tdc.catalogo.vo.FilmeVO;
+import com.tdc.catalogo.vo.CatalogoVO;
 
 @RestController
 @RequestMapping(value = "/v1/catalogo")
@@ -37,9 +37,9 @@ public class CatalogoController {
 	}
 	
 	@GetMapping("/pesquisaFilmePorGenero")
-	public ResponseEntity<FilmeVO> pesquisaFilmePorGenero(Integer idGenero) {
+	public ResponseEntity<CatalogoVO> pesquisaFilmePorGenero(Integer idGenero) {
 		
-		List<FilmeVO> list = catalogoService.pesquisaFilmePorGenero(idGenero);
+		List<CatalogoVO> list = catalogoService.pesquisaCatalogoPorGenero(idGenero);
 		
 		if (list.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -48,13 +48,18 @@ public class CatalogoController {
 		return new ResponseEntity(list,HttpStatus.OK);
 	}
 	
-	@PutMapping("/cadastro")
-	public ResponseEntity<?> cadastraFilme(FilmeVO filme) {
+	@PutMapping("/cadastraFilme")
+	public ResponseEntity<?> cadastraFilme(CatalogoVO filme) {
+		return catalogoService.cadastraFilme(filme);
+	}
+	
+	@PutMapping("/cadastraSerie")
+	public ResponseEntity<?> cadastraSerie(CatalogoVO filme) {
 		return catalogoService.cadastraFilme(filme);
 	}
 	
 	@GetMapping("/consultaDetalhes")
-	public ResponseEntity<List<FilmeVO>> consultaDetalhes(Integer idCatalogo, String nome) {
+	public ResponseEntity<List<CatalogoVO>> consultaDetalhes(Integer idCatalogo, String nome) {
 		
 		if (idCatalogo == null) {
 			idCatalogo = -1;
@@ -64,7 +69,7 @@ public class CatalogoController {
 			nome = "";
 		}
 		
-		List<FilmeVO> lista = catalogoService.consultaDetalhes(idCatalogo, nome);
+		List<CatalogoVO> lista = catalogoService.consultaDetalhes(idCatalogo, nome);
 		
 		if (lista == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -80,6 +85,21 @@ public class CatalogoController {
 		
 		return new ResponseEntity<>("Assistindo Filme", HttpStatus.OK);		
 	}
+	
+	@PostMapping("/assistirNoFuturo")
+	public ResponseEntity<?> assistirNoFuturo(Integer idCatalogo, Integer idUsuario) {
+		
+		catalogoService.assistirNoFuturo(idCatalogo, idUsuario);
+		
+		return new ResponseEntity<>("Marcado para Assistir no futuro", HttpStatus.OK);		
+	}
+	
+	@GetMapping("/consultaMaisAssistido")
+	public ResponseEntity<?> consultaMaisAssistido(Integer idGenero) {
+		
+		return catalogoService.consultaMaisAssistido(idGenero);
+	}
+	
 
 }	
 		

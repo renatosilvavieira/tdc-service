@@ -9,7 +9,18 @@ spring:
   cloud:
     loadbalancer:
       ribbon:
-        enabled: false  
+        enabled: false
+    stream:
+      default-binder: kafka            
+      bindings:
+        input:
+          destination: topico.usuario
+          group: output-group-1        
+          content-type: application/json       
+        Kafka:
+          binder:
+            zkNodes:localhost:9092
+            brokers:localhost:29092          
   datasource:
     name: usuariodb    
     url: jdbc:postgresql://postgres-usuario-service/usuario_db

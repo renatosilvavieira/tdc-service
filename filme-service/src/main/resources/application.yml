@@ -11,11 +11,11 @@ spring:
       ribbon:
         enabled: false        
     stream:
-      default-binder: kafka
-            
+      default-binder: kafka            
       bindings:
         output:          
-          destination: orgChangeTopic
+          destination: topico.usuario
+          group: output-group-1
           content-type: application/json
         Kafka:
           binder:
@@ -44,7 +44,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://eureka_server/eureka}
+      defaultZone: ${EUREKA_URI:eureka-server/eureka}
   instance:
     preferIpAddress: true
     
