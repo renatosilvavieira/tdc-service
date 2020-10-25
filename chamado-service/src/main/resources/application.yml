@@ -21,7 +21,7 @@ spring:
       minimum-idle: 20
       pool-name: manutencaodb
   jpa:
-    database-platform: org.hibernate.dialect.SQLServerDialect
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     show-sql: false
     properties:
       hibernate: 

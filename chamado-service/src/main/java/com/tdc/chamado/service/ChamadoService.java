@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tdc.chamado.entity.Chamado;
+import com.tdc.chamado.entity.ChamadoVO;
 import com.tdc.chamado.repository.ChamadoRepository;
 
 @Service
@@ -14,13 +15,14 @@ public class ChamadoService {
 	@Autowired
 	private ChamadoRepository chamadoRepository;
 	
-	public Chamado abrirChamado(Chamado chamado) {
+	public Chamado abrirChamado(ChamadoVO chamadoVO) {
 	
-		return chamadoRepository.Save(chamado);
+		Chamado chamado = new Chamado(chamadoVO);
+		return chamadoRepository.save(chamado);
 	}
 	
 	public Optional<Chamado> buscarChamado(Integer idChamado) {
 		
-		return chamadoRepository.findByID(idChamado);
+		return chamadoRepository.findById(idChamado);
 	}
 }
