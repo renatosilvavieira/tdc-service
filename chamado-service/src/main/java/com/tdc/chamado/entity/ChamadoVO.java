@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ChamadoVO {
-
+	
 	@JsonProperty("id_usuario")
 	private Long idUsuario;
 
