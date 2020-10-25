@@ -32,6 +32,6 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:eureka-server/eureka}
+      defaultZone: ${EUREKA_URI:eureka-server}
   instance:
     preferIpAddress: true

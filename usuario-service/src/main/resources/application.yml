@@ -19,7 +19,7 @@ spring:
           content-type: application/json       
         Kafka:
           binder:
-            zkNodes:localhost:9092
+            zkNodes:kafka
             brokers:localhost:29092          
   datasource:
     name: usuariodb    
@@ -43,6 +43,6 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:eureka/eureka}
+      defaultZone: ${EUREKA_URI:eureka_server}
   instance:
     preferIpAddress: true
