@@ -84,4 +84,10 @@ public class UsuarioController {
 	public ResponseEntity<?> votar(Integer idUsuario, Integer idCatalogo, Integer estrela) {		
 		return historicoCatalogoService.votar(idUsuario, idCatalogo, estrela);
 	}
+	
+	@PostMapping("/abrirChamado")
+	public ResponseEntity<?> abrirChamado(Integer idUsuario, String descricao) {
+		
+		return usuarioService.abrirChamado(idUsuario, descricao);
+	}	
 }

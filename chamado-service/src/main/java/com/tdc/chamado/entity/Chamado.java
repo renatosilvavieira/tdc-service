@@ -25,5 +25,8 @@ public class Chamado {
 	
 	@Column(name = "descricao")
 	private String descricao;
+	
+	@Column(name = "id_usuario")
+	private Integer idUsuario;
 
 }
