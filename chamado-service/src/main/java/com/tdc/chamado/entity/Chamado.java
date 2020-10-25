@@ -41,6 +41,8 @@ public class Chamado implements Serializable{
 	
 	private Long idCatalogo;
 	
+	private String status = "Novo";
+	
 	public Chamado(ChamadoVO chamadoVO){
 		this.descricao = chamadoVO.getDescricao();
 		this.idCatalogo = chamadoVO.getIdCatalogo();
