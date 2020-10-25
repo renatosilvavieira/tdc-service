@@ -40,7 +40,7 @@ public class ChamadoController {
 	}
 	
 	@PostMapping("/abrir_chamado")
-	public ResponseEntity<Chamado> abrirChamado(@RequestBody ChamadoVO chamado) {
+	public ResponseEntity<Chamado> abrirChamado(ChamadoVO chamado) {
 		
 		return new ResponseEntity<Chamado>(chamadoService.abrirChamado(chamado), HttpStatus.OK);
 		
