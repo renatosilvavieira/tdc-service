@@ -20,7 +20,7 @@ public class Chamado {
 	@Id	
 	@Column(name = "id_chamado", columnDefinition = "serial")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ApiParam(access="hide") 
+	@ApiParam(access="hide")
 	protected Integer idChamado;
 	
 	@Column(name = "descricao")

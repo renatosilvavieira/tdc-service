@@ -1,5 +1,7 @@
 package com.tdc.chamado.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +14,13 @@ public class ChamadoService {
 	@Autowired
 	private ChamadoRepository chamadoRepository;
 	
-	public Chamado abrirChamado(Chamado chamado, Integer codigo_filme) {
+	public Chamado abrirChamado(Chamado chamado) {
 	
 		return chamadoRepository.Save(chamado);
+	}
+	
+	public Optional<Chamado> buscarChamado(Integer idChamado) {
+		
+		return chamadoRepository.findByID(idChamado);
 	}
 }
