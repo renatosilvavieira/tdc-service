@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.netflix.discovery.EurekaClient;
 import com.tdc.chamado.entity.Chamado;
+import com.tdc.chamado.entity.ChamadoVO;
 import com.tdc.chamado.service.ChamadoService;
 
 @RestController
@@ -39,7 +40,7 @@ public class ChamadoController {
 	}
 	
 	@PostMapping("/abrir_chamado")
-	public ResponseEntity<Chamado> abrirChamado(@RequestBody Chamado chamado) {
+	public ResponseEntity<Chamado> abrirChamado(@RequestBody ChamadoVO chamado) {
 		
 		return new ResponseEntity<Chamado>(chamadoService.abrirChamado(chamado), HttpStatus.OK);
 		
