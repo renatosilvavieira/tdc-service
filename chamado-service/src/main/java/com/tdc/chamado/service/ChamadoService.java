@@ -7,7 +7,8 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Service;
 
-import com.netflix.hystrix.contrib.javanica.annotation.*;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.tdc.chamado.entity.Chamado;
 import com.tdc.chamado.entity.ChamadoVO;
 import com.tdc.chamado.processor.ChamadoProcessor;
