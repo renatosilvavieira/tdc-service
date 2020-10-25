@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.*;
@@ -29,5 +30,14 @@ public class ChamadoService {
 	
 	public Optional<Chamado> buscarChamado(Integer idChamado) {
 		return chamadoRepository.findById(idChamado);
+	}
+	
+	
+	@StreamListener(target = ChamadoProcessor.INPUT)
+	public void ouvirFilaChamados(ChamadoVO chamadoVO) {
+		
+		System.out.println("Valor = " + chamadoVO.toString());
+		abrirChamado(chamadoVO);
+		
 	}
 }
