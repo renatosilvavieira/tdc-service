@@ -44,11 +44,11 @@ public class UsuarioService {
 	@HystrixCommand(commandProperties=
 		{@HystrixProperty(
 				name="execution.isolation.thread.timeoutInMilliseconds",value="10000")})
-	public ResponseEntity<?> abrirChamado(Integer idUsuario, String descricao) {
+	public ResponseEntity<?> abrirChamado(Integer idUsuario, String descricao, Integer idCatalogo) {
 		
 		String.format("Http://%s/abrir_chamado", contextChamadoService);
 		
-		ChamadoVO chamadoVO = new ChamadoVO(descricao, idUsuario);
+		ChamadoVO chamadoVO = new ChamadoVO(descricao, idUsuario, idCatalogo);
 		
 		ChamadoVO response = restTemplate.postForObject(String.format("Http://%s/abrir_chamado", contextChamadoService), chamadoVO, ChamadoVO.class);
 		

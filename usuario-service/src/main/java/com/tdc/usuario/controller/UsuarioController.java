@@ -86,8 +86,8 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/abrirChamado")
-	public ResponseEntity<?> abrirChamado(Integer idUsuario, String descricao) {
+	public ResponseEntity<?> abrirChamado(Integer idUsuario, String descricao, Integer idCatalogo) {
 		
-		return usuarioService.abrirChamado(idUsuario, descricao);
+		return usuarioService.abrirChamado(idUsuario, descricao, idCatalogo);
 	}	
 }

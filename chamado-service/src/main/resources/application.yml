@@ -9,7 +9,18 @@ spring:
   cloud:
     loadbalancer:
       ribbon:
-        enabled: false  
+        enabled: true
+    stream:
+      default-binder: kafka            
+      bindings:
+        input:
+          destination: topico.chamado
+          group: output-group-1        
+          content-type: application/json       
+        Kafka:
+          binder:
+            zkNodes:localhost:9092
+            brokers:localhost:29092   
   datasource:
     name: manutencaodb    
     url: jdbc:postgresql://localhost:5432/manutencao_db?createDatabaseIfNotExist=true&useSSL=false
@@ -26,7 +37,7 @@ spring:
     properties:
       hibernate: 
         format_sql: true
-        ddl-auto: update
+        ddl-auto: create
 
 
 eureka:
