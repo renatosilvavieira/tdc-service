@@ -10,7 +10,9 @@ services:
       - "5432:5432"
     volumes: 
       - postgresql-volume:/var/lib/postgresql/data    
-      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql      
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema_catalogo_db.sql  
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema_manutencao_db.sql  
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema_usuario_db.sql      
     networks:
       - postgres-compose-network
       
