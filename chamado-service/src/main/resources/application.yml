@@ -15,7 +15,7 @@ spring:
       bindings:
         input:
           destination: topico.chamado
-          group: output-group-1        
+          group: output-group-2        
           content-type: application/json       
         Kafka:
           binder:

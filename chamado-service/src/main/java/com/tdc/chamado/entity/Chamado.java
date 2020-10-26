@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiParam;
@@ -34,11 +35,12 @@ public class Chamado implements Serializable{
 	private String descricao;
 	
 	@Column(name = "data_hora_abertura")
-	private Instant dataHoraAbertura = Instant.now();
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	private LocalDateTime dataHoraAbertura = LocalDateTime.now();
 	
-	private Long idUsuario;
+	private Integer idUsuario;
 	
-	private Long idCatalogo;
+	private Integer idCatalogo;
 	
 	private String status = "Novo";
 	

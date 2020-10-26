@@ -16,7 +16,11 @@ spring:
         input:
           destination: topico.usuario
           group: output-group-1        
-          content-type: application/json       
+          content-type: application/json 
+        input1:
+          destination: topico.chamado
+          group: output-group-2        
+          content-type: application/json        
         Kafka:
           binder:
             zkNodes:localhost:9092

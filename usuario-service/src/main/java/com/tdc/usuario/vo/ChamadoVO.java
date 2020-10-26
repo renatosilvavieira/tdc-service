@@ -1,27 +1,27 @@
 package com.tdc.usuario.vo;
 
-import io.swagger.annotations.ApiParam;
+import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ChamadoVO {
-	
-	public ChamadoVO(String descricao, Integer idUsuario, Integer idCatalogo) {
-		super();
-		this.descricao = descricao;
-		this.idUsuario = idUsuario;
-		this.idCatalogo = idCatalogo;
-	}
+@AllArgsConstructor
+public class ChamadoVO implements Serializable{
 
-	@ApiParam(access="hide")
-	private Integer idChamado;
-	
-	private String descricao;
+	private static final long serialVersionUID = -412142744567114896L;
 
+	@JsonProperty("id_usuario")
 	private Integer idUsuario;
 
+	@JsonProperty("id_Catalogo")
 	private Integer idCatalogo;
+
+	@JsonProperty("descricao")
+	private String descricao;
 
 }

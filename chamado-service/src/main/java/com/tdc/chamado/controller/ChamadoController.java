@@ -39,7 +39,7 @@ public class ChamadoController {
 		return String.format("Aplicação %s", eurekaClient.getApplication(appName).getName());
 	}
 	
-	@PostMapping("/abrir_chamado")
+	@PostMapping("/abrirChamado")
 	public ResponseEntity<Chamado> abrirChamado(ChamadoVO chamado) {
 		
 		return new ResponseEntity<Chamado>(chamadoService.abrirChamado(chamado), HttpStatus.OK);
