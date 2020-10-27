@@ -11,12 +11,13 @@ public interface ChamadoProcessor {
 
 	String INPUT = "topico.chamado";
 	
-	String OUTPUT = "topico.chamado";
-	
 	@Input(INPUT) 
 	SubscribableChannel inChamadoVO();
 	
-	@Output("topico.usuario")
+	@Output("topico.chamado")
 	MessageChannel output();
+
+	@Output("topico.chamadoUsuario")
+	MessageChannel outputUsuario();
 	
 }

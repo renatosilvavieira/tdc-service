@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -42,21 +43,23 @@ public class ChamadoService {
 	}
 	
 	public void enviaMensagem(Chamado chamado) {
-		chamado.setStatus("Recepcionado");
-		
+
 		chamadoProcessor.output().send(MessageBuilder.withPayload(chamado)
-	            .build());	
-		
-		chamadoRepository.save(chamado);
+	            .build());
 	}
 	
 	
 	@StreamListener(target = ChamadoProcessor.INPUT)
-	public void ouvirFilaChamados(ChamadoVO chamadoVO) {
+	public void recepicionarFilaChamados(Chamado chamado) {
 		
-		System.out.println("Valor = " + chamadoVO.toString());
+		chamado.setStatus("Recepcionado");
 		
-		abrirChamado(chamadoVO);
+		System.out.println("Valor = " + chamado.toString());
+		
+		chamadoRepository.save(chamado);
+		
+		chamadoProcessor.outputUsuario().send(MessageBuilder.withPayload(chamado)
+	            .build());
 		
 	}
 }
