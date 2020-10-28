@@ -9,18 +9,22 @@ spring:
   cloud:
     loadbalancer:
       ribbon:
-        enabled: false
+        enabled: true
     stream:
       default-binder: kafka            
       bindings:
         input:
           destination: topico.usuario
           group: output-group-1        
-          content-type: application/json       
+          content-type: application/json 
+        input1:
+          destination: topico.chamado
+          group: output-group-2        
+          content-type: application/json        
         Kafka:
           binder:
             zkNodes:kafka
-            brokers:localhost:29092          
+            brokers:kafka:29092          
   datasource:
     name: usuariodb    
     url: jdbc:postgresql://postgres-usuario-service/usuario_db
@@ -43,6 +47,9 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:eureka_server}
+      defaultZone: ${EUREKA_URI:http://eureka_server/eureka}
   instance:
     preferIpAddress: true
+
+nome-servicos:
+   aplicacao-chamado-service: chamado-service

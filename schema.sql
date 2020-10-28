@@ -1,4 +1,0 @@
---CREATE DATABASE IF EXISTS catalogo_db;
---CREATE DATABASE IF EXISTS usuario_db;
---CREATE DATABASE IF EXISTS manutencao_db;
-

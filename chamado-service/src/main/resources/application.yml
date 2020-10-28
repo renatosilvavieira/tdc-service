@@ -9,7 +9,18 @@ spring:
   cloud:
     loadbalancer:
       ribbon:
-        enabled: false  
+        enabled: true
+    stream:
+      default-binder: kafka            
+      bindings:
+        input:
+          destination: topico.chamado
+          group: output-group-2        
+          content-type: application/json       
+        Kafka:
+          binder:
+            zkNodes:kafka:9092
+            brokers:kafka:29092   
   datasource:
     name: manutencaodb    
     url: jdbc:postgresql://postgres-chamado-service/manutencao_db?createDatabaseIfNotExist=true&useSSL=false
@@ -21,17 +32,18 @@ spring:
       minimum-idle: 20
       pool-name: manutencaodb
   jpa:
-    database-platform: org.hibernate.dialect.SQLServerDialect
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     show-sql: false
+    generate-ddl: true
     properties:
       hibernate: 
         format_sql: true
-        ddl-auto: update
+        ddl-auto: create
 
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:eureka-server}
+      defaultZone: ${EUREKA_URI:http://eureka_server/eureka}
   instance:
     preferIpAddress: true

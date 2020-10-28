@@ -20,7 +20,7 @@ spring:
         Kafka:
           binder:
             zkNodes:kafka
-            brokers:localhost:29092
+            brokers:kafka:29092
       
   datasource:
     name: catalogodb    
@@ -44,7 +44,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:eureka-server}
+      defaultZone: ${EUREKA_URI:http://eureka_server/eureka}
   instance:
     preferIpAddress: true
     
