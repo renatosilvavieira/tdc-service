@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -50,11 +51,11 @@ public class UsuarioService {
 				name="execution.isolation.thread.timeoutInMilliseconds",value="10000")})
 	public ResponseEntity<ChamadoAbertoVO> abrirChamado(ChamadoVO chamadoVO) {
 		
-		String enderecoChamado = String.format("http://localhost:8084/%s/v1/chamado/abrirChamado", contextChamadoService);
+		String enderecoChamado = String.format("http://%s/chamado-service/v1/chamado/abrirChamado/{0}/{1}/{2}", contextChamadoService);
 		
-		ResponseEntity<ChamadoAbertoVO> ChamadoAbertoVO = restTemplate.postForEntity(enderecoChamado, chamadoVO, ChamadoAbertoVO.class);
+		ResponseEntity<ChamadoAbertoVO> chamadoAbertoVO = restTemplate.exchange(enderecoChamado, HttpMethod.POST, null, ChamadoAbertoVO.class, chamadoVO.getIdUsuario(), chamadoVO.getIdCatalogo(), chamadoVO.getDescricao());
 		
-		return ChamadoAbertoVO;
+		return chamadoAbertoVO;
 	}
 	
 	@StreamListener(target = UsuarioProcessor.INPUT_CHAMADO)

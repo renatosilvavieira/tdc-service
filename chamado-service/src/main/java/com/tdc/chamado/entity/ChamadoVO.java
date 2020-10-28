@@ -20,8 +20,7 @@ public class ChamadoVO implements Serializable{
 
 	@JsonProperty("id_Catalogo")
 	private Integer idCatalogo;
-
-	@JsonProperty("descricao")
+	
 	private String descricao;
 	
 }
