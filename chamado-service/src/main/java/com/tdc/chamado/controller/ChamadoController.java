@@ -39,10 +39,10 @@ public class ChamadoController {
 		return String.format("Aplicação %s", eurekaClient.getApplication(appName).getName());
 	}
 	
-	@PostMapping("/abrirChamado")
-	public ResponseEntity<Chamado> abrirChamado(ChamadoVO chamado) {
+	@PostMapping("/abrirChamado/{idUsuario}/{idCatalogo}/{descricao}")
+	public ResponseEntity<Chamado> abrirChamado(@PathVariable(value = "idUsuario") Integer idUsuario, @PathVariable(value = "idCatalogo") Integer idCatalogo, @PathVariable(value = "descricao") String descricao) {
 		
-		return new ResponseEntity<Chamado>(chamadoService.abrirChamado(chamado), HttpStatus.OK);
+		return new ResponseEntity<Chamado>(chamadoService.abrirChamado(new ChamadoVO(idUsuario, idCatalogo, descricao)), HttpStatus.OK);
 		
 	}
 	

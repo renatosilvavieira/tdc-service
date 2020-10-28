@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public interface UsuarioProcessor {
 	String INPUT = "topico.usuario";
 	
-	String INPUT_CHAMADO = "topico.chamado";
+	String INPUT_CHAMADO = "topico.chamadoUsuario";
 		
 	@Input(INPUT) 
 	SubscribableChannel inFilmeAssistido();
