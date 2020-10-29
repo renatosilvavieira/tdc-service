@@ -5,7 +5,7 @@ services:
     image: postgres:13
     restart: always
     environment:
-      POSTGRES_DB: usuario_db
+      POSTGRES_DB: catalogo_db
       POSTGRES_PASSWORD: postgres
     volumes:
       - postgresql-filme-service-volume:/var/lib/postgresql/data
@@ -27,7 +27,7 @@ services:
     image: postgres:13
     restart: always
     environment:
-      POSTGRES_DB: usuario_db
+      POSTGRES_DB: manutencao_db
       POSTGRES_PASSWORD: postgres
     volumes:
       - postgresql-chamado-service-volume:/var/lib/postgresql/data
