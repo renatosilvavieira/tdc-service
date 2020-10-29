@@ -19,7 +19,7 @@ spring:
           content-type: application/json
         Kafka:
           binder:
-            zkNodes:kafka
+            zkNodes:http://kafka:9092
             brokers:kafka:29092
       
   datasource:

@@ -2,30 +2,33 @@ version: "3"
 
 services:
   postgres-filme-service:
-    build:
-      context: filme-service
-      dockerfile: Dockerfile-postgresql
+    image: postgres:13
     restart: always
+    environment:
+      POSTGRES_DB: usuario_db
+      POSTGRES_PASSWORD: postgres
     volumes:
       - postgresql-filme-service-volume:/var/lib/postgresql/data
     networks:
       - postgresql-filme-service-network
 
   postgres-usuario-service:
-    build:
-      context: usuario-service
-      dockerfile: Dockerfile-postgresql
+    image: postgres:13
     restart: always
+    environment:
+      POSTGRES_DB: usuario_db
+      POSTGRES_PASSWORD: postgres
     volumes:
       - postgresql-usuario-service-volume:/var/lib/postgresql/data
     networks:
       - postgresql-usuario-service-network
 
   postgres-chamado-service:
-    build:
-      context: chamado-service
-      dockerfile: Dockerfile-postgresql
+    image: postgres:13
     restart: always
+    environment:
+      POSTGRES_DB: usuario_db
+      POSTGRES_PASSWORD: postgres
     volumes:
       - postgresql-chamado-service-volume:/var/lib/postgresql/data
     networks:
@@ -69,12 +72,13 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://0.0.0.0:9092, PLAINTEXT://kafka:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     volumes:
       - kafka-volume:/var/run/docker.sock
+      # - /usr/.m2:/
 
   kafdrop:
     image: obsidiandynamics/kafdrop:latest

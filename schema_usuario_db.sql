@@ -1,1 +1,0 @@
-CREATE DATABASE usuario_db;
